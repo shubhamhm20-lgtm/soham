@@ -1,0 +1,112 @@
+"use client";
+
+import Link from "next/link";
+import { ArrowRight, Gem, PackageCheck, Sparkles } from "lucide-react";
+import { ProductCard } from "@/components/product-card";
+import { categories, categoryImages, sampleProducts } from "@/lib/products";
+
+export default function HomePage() {
+  const featured = sampleProducts.filter((product) => product.featured);
+
+  return (
+    <>
+      <section className="container hero">
+        <div className="hero-copy">
+          <p className="eyebrow">Imitation jewelry boutique</p>
+          <h1>Soham Jewels</h1>
+          <p className="lead">
+            Shop elegant necklaces, chandbalis, bangles, rings, and bridal sets in INR with easy
+            retail checkout and a dedicated wholesale inquiry path.
+          </p>
+          <div className="hero-actions">
+            <Link className="button" href="/shop">
+              Shop collection <ArrowRight size={18} />
+            </Link>
+            <Link className="ghost-button" href="/wholesale">
+              Wholesale inquiry
+            </Link>
+          </div>
+        </div>
+        <div className="hero-media">
+          <img
+            src="https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=1300&q=90"
+            alt="Elegant imitation bridal jewelry set"
+          />
+          <div className="hero-note">
+            <span>
+              <strong>Retail orders</strong>
+              <br />
+              Razorpay or manual payment
+            </span>
+            <span>
+              <strong>Wholesale</strong>
+              <br />
+              Quote request only
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <section className="section alt">
+        <div className="container">
+          <div className="section-head">
+            <div>
+              <p className="eyebrow">Collections</p>
+              <h2>Shop by occasion and style</h2>
+            </div>
+            <Link className="ghost-button" href="/shop">
+              All products
+            </Link>
+          </div>
+          <div className="category-grid">
+            {categories.map((category) => (
+              <Link className="category-tile" href={`/shop?category=${encodeURIComponent(category)}`} key={category}>
+                <img src={categoryImages[category]} alt={`${category} collection`} />
+                <div>
+                  <h3>{category}</h3>
+                  <p className="muted">Explore pieces</p>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="section">
+        <div className="container">
+          <div className="section-head">
+            <div>
+              <p className="eyebrow">Featured pieces</p>
+              <h2>Ready for festive gifting</h2>
+            </div>
+          </div>
+          <div className="product-grid">
+            {featured.map((product) => (
+              <ProductCard product={product} key={product.id} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="section alt">
+        <div className="container stats-grid">
+          <div className="stat">
+            <Gem color="#b55b61" />
+            <h3>Curated catalog</h3>
+            <p className="muted">Necklaces, earrings, bangles, bridal sets, and rings with sample stock.</p>
+          </div>
+          <div className="stat">
+            <PackageCheck color="#65735b" />
+            <h3>Flat shipping</h3>
+            <p className="muted">Checkout uses a simple India-first delivery model for v1.</p>
+          </div>
+          <div className="stat">
+            <Sparkles color="#c49a45" />
+            <h3>Wholesale ready</h3>
+            <p className="muted">Bulk buyers can send quote requests without complicating retail checkout.</p>
+          </div>
+        </div>
+      </section>
+    </>
+  );
+}
