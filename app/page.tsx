@@ -1,12 +1,16 @@
 "use client";
 
+import { useMemo } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, Gem, PackageCheck, Sparkles } from "lucide-react";
 import { ProductCard } from "@/components/product-card";
-import { categories, categoryImages, sampleProducts } from "@/lib/products";
+import { categories, categoryImages } from "@/lib/products";
+import { getProducts } from "@/lib/storage";
 
 export default function HomePage() {
-  const featured = sampleProducts.filter((product) => product.featured);
+  const allProducts = useMemo(() => getProducts(), []);
+  const featured = useMemo(() => allProducts.filter((product) => product.featured), [allProducts]);
 
   return (
     <>
@@ -28,9 +32,13 @@ export default function HomePage() {
           </div>
         </div>
         <div className="hero-media">
-          <img
+          <Image
             src="https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=1300&q=90"
             alt="Elegant imitation bridal jewelry set"
+            width={1300}
+            height={1625}
+            priority
+            style={{ width: "100%", height: "100%", minHeight: 620, objectFit: "cover" }}
           />
           <div className="hero-note">
             <span>
@@ -61,7 +69,7 @@ export default function HomePage() {
           <div className="category-grid">
             {categories.map((category) => (
               <Link className="category-tile" href={`/shop?category=${encodeURIComponent(category)}`} key={category}>
-                <img src={categoryImages[category]} alt={`${category} collection`} />
+                <Image src={categoryImages[category]} alt={`${category} collection`} width={900} height={1125} style={{ width: "100%", height: "auto", aspectRatio: "4/5", objectFit: "cover" }} />
                 <div>
                   <h3>{category}</h3>
                   <p className="muted">Explore pieces</p>

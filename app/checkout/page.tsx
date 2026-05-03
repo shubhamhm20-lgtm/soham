@@ -3,9 +3,9 @@
 import { FormEvent, useMemo, useState } from "react";
 import Link from "next/link";
 import { useCart } from "@/components/cart-provider";
-import { formatInr, getFlatShippingFee, sampleProducts } from "@/lib/products";
-import { saveOrder } from "@/lib/storage";
-import type { CustomerAddress, PaymentMethod } from "@/lib/types";
+import { formatInr, getFlatShippingFee } from "@/lib/products";
+import { getProducts, saveOrder } from "@/lib/storage";
+import type { CartItem, CustomerAddress, PaymentMethod, Product } from "@/lib/types";
 
 const emptyCustomer: CustomerAddress = {
   name: "",
@@ -25,14 +25,16 @@ export default function CheckoutPage() {
   const [confirmation, setConfirmation] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const allProducts = useMemo(() => getProducts(), []);
+
   const rows = useMemo(
     () =>
       items
-        .map((item) => ({ item, product: sampleProducts.find((product) => product.id === item.productId) }))
-        .filter((row) => row.product),
-    [items]
+        .map((item) => ({ item, product: allProducts.find((product) => product.id === item.productId) }))
+        .filter((row): row is { item: CartItem; product: Product } => !!row.product),
+    [items, allProducts]
   );
-  const subtotal = rows.reduce((sum, row) => sum + row.product!.price_inr * row.item.quantity, 0);
+  const subtotal = rows.reduce((sum, row) => sum + row.product.price_inr * row.item.quantity, 0);
   const shippingFee = rows.length ? getFlatShippingFee() : 0;
   const total = subtotal + shippingFee;
 
@@ -41,30 +43,66 @@ export default function CheckoutPage() {
     if (!rows.length) return;
     setIsSubmitting(true);
 
-    if (paymentMethod === "online_razorpay") {
-      await fetch("/api/razorpay/order", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ amount: total })
-      });
-    }
+    try {
+      if (paymentMethod === "online_razorpay") {
+        const response = await fetch("/api/razorpay/order", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ amount: total })
+        });
+        const data = await response.json();
 
+        if (!response.ok) {
+          alert(data.error || "Payment service error. Please try again.");
+          setIsSubmitting(false);
+          return;
+        }
+
+        // If Razorpay keys are configured, open checkout (requires Razorpay script).
+        // In demo mode (data.demo === true), proceed with order placement directly.
+        if (!data.demo && typeof window !== "undefined" && window.Razorpay) {
+          const rpOptions = {
+            key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+            amount: data.amount,
+            currency: data.currency,
+            order_id: data.id,
+            name: "SOHAM SALES",
+            description: "Jewelry order",
+            handler: () => {
+              placeOrder("paid");
+            }
+          };
+          const rzp = new window.Razorpay(rpOptions);
+          rzp.open();
+          setIsSubmitting(false);
+          return;
+        }
+      }
+
+      placeOrder(paymentMethod === "online_razorpay" ? "pending" : "pending");
+    } catch {
+      alert("Something went wrong. Please try again.");
+      setIsSubmitting(false);
+    }
+  }
+
+  function placeOrder(paymentStatus: "pending" | "paid") {
     const id = `SJ-${Date.now().toString().slice(-7)}`;
     saveOrder({
       id,
       createdAt: new Date().toISOString(),
       customer,
       items: rows.map(({ item, product }) => ({
-        productId: product!.id,
-        name: product!.name,
-        price_inr: product!.price_inr,
+        productId: product.id,
+        name: product.name,
+        price_inr: product.price_inr,
         quantity: item.quantity
       })),
       subtotal,
       shippingFee,
       total,
       paymentMethod,
-      paymentStatus: paymentMethod === "online_razorpay" ? "pending" : "pending",
+      paymentStatus,
       orderStatus: "pending"
     });
     clearCart();
@@ -122,9 +160,9 @@ export default function CheckoutPage() {
         {rows.map(({ item, product }) => (
           <div className="summary-line" key={item.productId}>
             <span>
-              {product!.name} x {item.quantity}
+              {product.name} x {item.quantity}
             </span>
-            <strong>{formatInr(product!.price_inr * item.quantity)}</strong>
+            <strong>{formatInr(product.price_inr * item.quantity)}</strong>
           </div>
         ))}
         <div className="summary-line">

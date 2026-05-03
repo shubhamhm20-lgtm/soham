@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useRef, useState } from "react";
 import type { CartItem } from "@/lib/types";
 
 type CartContextValue = {
@@ -15,15 +15,26 @@ type CartContextValue = {
 const CartContext = createContext<CartContextValue | null>(null);
 const cartKey = "soham.cart";
 
+function readCart(): CartItem[] {
+  if (typeof window === "undefined") return [];
+  const stored = window.localStorage.getItem(cartKey);
+  if (!stored) return [];
+  try {
+    return JSON.parse(stored) as CartItem[];
+  } catch {
+    return [];
+  }
+}
+
 export function CartProvider({ children }: { children: React.ReactNode }) {
-  const [items, setItems] = useState<CartItem[]>([]);
+  const [items, setItems] = useState<CartItem[]>(() => readCart());
+  const initialised = useRef(false);
 
   useEffect(() => {
-    const stored = window.localStorage.getItem(cartKey);
-    if (stored) setItems(JSON.parse(stored) as CartItem[]);
-  }, []);
-
-  useEffect(() => {
+    if (!initialised.current) {
+      initialised.current = true;
+      return;
+    }
     window.localStorage.setItem(cartKey, JSON.stringify(items));
   }, [items]);
 

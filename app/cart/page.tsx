@@ -1,16 +1,26 @@
 "use client";
 
+import { useMemo } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Minus, Plus, Trash2 } from "lucide-react";
 import { useCart } from "@/components/cart-provider";
-import { formatInr, getFlatShippingFee, sampleProducts } from "@/lib/products";
+import { formatInr, getFlatShippingFee } from "@/lib/products";
+import { getProducts } from "@/lib/storage";
+import type { CartItem, Product } from "@/lib/types";
 
 export default function CartPage() {
   const { items, updateItem, removeItem } = useCart();
-  const rows = items
-    .map((item) => ({ item, product: sampleProducts.find((product) => product.id === item.productId) }))
-    .filter((row) => row.product);
-  const subtotal = rows.reduce((sum, row) => sum + row.product!.price_inr * row.item.quantity, 0);
+  const allProducts = useMemo(() => getProducts(), []);
+
+  const rows = useMemo(
+    () =>
+      items
+        .map((item) => ({ item, product: allProducts.find((product) => product.id === item.productId) }))
+        .filter((row): row is { item: CartItem; product: Product } => !!row.product),
+    [items, allProducts]
+  );
+  const subtotal = rows.reduce((sum, row) => sum + row.product.price_inr * row.item.quantity, 0);
   const shipping = rows.length ? getFlatShippingFee() : 0;
 
   return (
@@ -29,10 +39,10 @@ export default function CartPage() {
           ) : (
             rows.map(({ item, product }) => (
               <div className="cart-row" key={item.productId}>
-                <img src={product!.images[0]} alt={product!.name} />
+                <Image src={product.images[0]} alt={product.name} width={84} height={96} style={{ objectFit: "cover", borderRadius: 8 }} />
                 <div>
-                  <h3>{product!.name}</h3>
-                  <p className="muted">{formatInr(product!.price_inr)}</p>
+                  <h3>{product.name}</h3>
+                  <p className="muted">{formatInr(product.price_inr)}</p>
                 </div>
                 <div className="split-actions">
                   <div className="quantity-control">
@@ -40,7 +50,15 @@ export default function CartPage() {
                       <Minus size={15} />
                     </button>
                     <span>{item.quantity}</span>
-                    <button type="button" onClick={() => updateItem(item.productId, item.quantity + 1)}>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (item.quantity < product.stock) {
+                          updateItem(item.productId, item.quantity + 1);
+                        }
+                      }}
+                      disabled={item.quantity >= product.stock}
+                    >
                       <Plus size={15} />
                     </button>
                   </div>

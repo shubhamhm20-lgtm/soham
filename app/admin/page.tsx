@@ -2,7 +2,7 @@
 
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import { Edit3, LogOut, Package, Plus, Save, Trash2 } from "lucide-react";
-import { categories, formatInr, sampleProducts } from "@/lib/products";
+import { categories, formatInr } from "@/lib/products";
 import { getInquiries, getOrders, getProducts, saveProducts } from "@/lib/storage";
 import type { Category, Order, Product, WholesaleInquiry } from "@/lib/types";
 
@@ -26,8 +26,9 @@ function blankProduct(): Product {
 export default function AdminPage() {
   const [authed, setAuthed] = useState(false);
   const [password, setPassword] = useState("");
+  const [loginError, setLoginError] = useState("");
   const [tab, setTab] = useState<"products" | "orders" | "inquiries">("products");
-  const [products, setProducts] = useState<Product[]>(sampleProducts);
+  const [products, setProducts] = useState<Product[]>([]);
   const [orders, setOrders] = useState<Order[]>([]);
   const [inquiries, setInquiries] = useState<WholesaleInquiry[]>([]);
   const [editing, setEditing] = useState<Product>(blankProduct());
@@ -48,11 +49,23 @@ export default function AdminPage() {
     [products, orders, inquiries]
   );
 
-  function login(event: FormEvent<HTMLFormElement>) {
+  async function login(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (password === (process.env.NEXT_PUBLIC_ADMIN_PASSWORD || "admin123")) {
-      window.localStorage.setItem(adminKey, "true");
-      setAuthed(true);
+    setLoginError("");
+    try {
+      const res = await fetch("/api/admin/auth", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password })
+      });
+      if (res.ok) {
+        window.localStorage.setItem(adminKey, "true");
+        setAuthed(true);
+      } else {
+        setLoginError("Incorrect password.");
+      }
+    } catch {
+      setLoginError("Unable to verify. Please try again.");
     }
   }
 
@@ -79,7 +92,8 @@ export default function AdminPage() {
         <form className="panel" onSubmit={login} style={{ maxWidth: 480 }}>
           <p className="eyebrow">Admin</p>
           <h1>Sign in</h1>
-          <p className="muted">Demo admin uses a local password until Supabase Auth is connected.</p>
+          <p className="muted">Demo admin uses a server-verified password until Supabase Auth is connected.</p>
+          {loginError ? <p style={{ color: "var(--rose-dark)", fontWeight: 700, marginTop: 8 }}>{loginError}</p> : null}
           <div className="field" style={{ marginTop: 18 }}>
             <label htmlFor="password">Password</label>
             <input id="password" type="password" value={password} onChange={(event) => setPassword(event.target.value)} />

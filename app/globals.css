@@ -416,6 +416,10 @@ h3 {
   place-items: center;
 }
 
+.quantity-control button {
+  cursor: pointer;
+}
+
 .quantity-control span {
   border-inline: 1px solid var(--line);
 }

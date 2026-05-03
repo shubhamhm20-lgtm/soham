@@ -1,7 +1,13 @@
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
-  const { amount } = (await request.json()) as { amount: number };
+  const body = await request.json();
+  const amount = Number(body?.amount);
+
+  if (!amount || amount <= 0 || !Number.isFinite(amount)) {
+    return NextResponse.json({ error: "Invalid amount" }, { status: 400 });
+  }
+
   const keyId = process.env.RAZORPAY_KEY_ID;
   const keySecret = process.env.RAZORPAY_KEY_SECRET;
 

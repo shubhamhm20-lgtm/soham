@@ -1,15 +1,18 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useParams } from "next/navigation";
 import { Minus, Plus, ShoppingBag } from "lucide-react";
 import { useState } from "react";
 import { useCart } from "@/components/cart-provider";
 import { formatInr, getProductBySlug } from "@/lib/products";
+import { getProducts } from "@/lib/storage";
 
 export default function ProductDetailPage() {
   const params = useParams<{ slug: string }>();
-  const product = getProductBySlug(params.slug);
+  const allProducts = getProducts();
+  const product = getProductBySlug(params.slug, allProducts);
   const { addItem } = useCart();
   const [quantity, setQuantity] = useState(1);
 
@@ -28,7 +31,7 @@ export default function ProductDetailPage() {
   return (
     <section className="container page product-detail">
       <div>
-        <img className="gallery-main" src={product.images[0]} alt={product.name} />
+        <Image className="gallery-main" src={product.images[0]} alt={product.name} width={800} height={1000} style={{ width: "100%", height: "auto" }} />
       </div>
       <div className="panel detail-panel">
         <p className="eyebrow">{product.category}</p>
@@ -44,7 +47,12 @@ export default function ProductDetailPage() {
               <Minus size={16} />
             </button>
             <span>{quantity}</span>
-            <button type="button" onClick={() => setQuantity(quantity + 1)} aria-label="Increase quantity">
+            <button
+              type="button"
+              onClick={() => setQuantity(Math.min(product.stock, quantity + 1))}
+              disabled={quantity >= product.stock}
+              aria-label="Increase quantity"
+            >
               <Plus size={16} />
             </button>
           </div>

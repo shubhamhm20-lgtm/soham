@@ -3,7 +3,8 @@
 import { useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { ProductCard } from "@/components/product-card";
-import { categories, sampleProducts } from "@/lib/products";
+import { categories } from "@/lib/products";
+import { getProducts } from "@/lib/storage";
 import type { Category } from "@/lib/types";
 
 export function ShopClient() {
@@ -11,9 +12,11 @@ export function ShopClient() {
   const initialCategory = searchParams.get("category") as Category | null;
   const [category, setCategory] = useState<Category | "All">(initialCategory || "All");
 
+  const allProducts = useMemo(() => getProducts(), []);
+
   const products = useMemo(() => {
-    return sampleProducts.filter((product) => product.active && (category === "All" || product.category === category));
-  }, [category]);
+    return allProducts.filter((product) => product.active && (category === "All" || product.category === category));
+  }, [category, allProducts]);
 
   return (
     <section className="container page">

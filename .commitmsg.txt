@@ -1,0 +1,15 @@
+fix: resolve bugs across cart, checkout, admin, images, and security
+
+- Fix cart hydration race condition (lazy useState init + guarded write effect)
+- Add try/catch around cart localStorage JSON.parse
+- Fix Razorpay checkout: read API response, open Razorpay window when configured, handle errors
+- Remove dead paymentStatus ternary (both branches were identical)
+- Move admin password check to server-side API route (no longer exposed in client bundle)
+- Swap hardcoded sampleProducts for getProducts() in shop, cart, checkout, product detail, and home page
+- Add stock validation: cap quantity at product.stock, disable plus button at limit
+- Validate amount in Razorpay API route (reject non-positive/non-finite values)
+- Migrate all img to next/image + add Unsplash remotePatterns in next.config
+- Use proper TypeScript type guards to eliminate non-null assertions
+- Add cursor:pointer to quantity control buttons
+- Add Razorpay global type declaration (global.d.ts)
+- Update .env.example: NEXT_PUBLIC_ADMIN_PASSWORD to ADMIN_PASSWORD

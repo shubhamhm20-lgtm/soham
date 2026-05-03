@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { ShoppingBag } from "lucide-react";
 import { useCart } from "@/components/cart-provider";
 import { formatInr } from "@/lib/products";
@@ -12,7 +13,7 @@ export function ProductCard({ product }: { product: Product }) {
   return (
     <article className="product-card">
       <Link href={`/product/${product.slug}`}>
-        <img src={product.images[0]} alt={product.name} />
+        <Image src={product.images[0]} alt={product.name} width={600} height={750} style={{ width: "100%", height: "auto", aspectRatio: "4/5", objectFit: "cover" }} />
       </Link>
       <div className="product-card-body">
         <div>
