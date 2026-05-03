@@ -77,7 +77,7 @@ export default function CheckoutPage() {
       <section className="container page">
         <div className="panel">
           <p className="eyebrow">Order placed</p>
-          <h1>Thank you for shopping with Soham Jewels.</h1>
+          <h1>Thank you for shopping with SOHAM SALES.</h1>
           <p className="lead">Your order number is {confirmation}. We will confirm payment and delivery details shortly.</p>
           <Link className="button" href="/shop">
             Continue shopping

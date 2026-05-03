@@ -1,4 +1,4 @@
-# Soham Jewels
+# SOHAM SALES
 
 A Next.js ecommerce starter for an imitation jewelry business.
 

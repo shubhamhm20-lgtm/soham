@@ -13,7 +13,7 @@ export default function HomePage() {
       <section className="container hero">
         <div className="hero-copy">
           <p className="eyebrow">Imitation jewelry boutique</p>
-          <h1>Soham Jewels</h1>
+          <h1>SOHAM SALES</h1>
           <p className="lead">
             Shop elegant necklaces, chandbalis, bangles, rings, and bridal sets in INR with easy
             retail checkout and a dedicated wholesale inquiry path.

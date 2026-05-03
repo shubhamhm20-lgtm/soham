@@ -11,7 +11,7 @@ export function Header() {
     <header className="header">
       <div className="container nav">
         <Link href="/" className="brand">
-          {process.env.NEXT_PUBLIC_SITE_NAME || "Soham Jewels"}
+          {process.env.NEXT_PUBLIC_SITE_NAME || "SOHAM SALES"}
         </Link>
         <nav className="nav-links" aria-label="Primary navigation">
           <Link href="/shop">Shop</Link>

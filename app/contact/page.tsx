@@ -19,7 +19,7 @@ export default function ContactPage() {
           <div className="stat">
             <Mail color="#65735b" />
             <h3>Email</h3>
-            <p className="muted">orders@sohamjewels.example</p>
+            <p className="muted">orders@sohamsales.example</p>
           </div>
           <div className="stat">
             <MapPin color="#c49a45" />

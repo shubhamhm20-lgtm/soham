@@ -16,7 +16,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Soham Jewels | Imitation Jewelry Boutique",
+  title: "SOHAM SALES | Imitation Jewelry Boutique",
   description: "Elegant imitation jewelry for everyday, festive, bridal, and wholesale buyers."
 };
 
