@@ -8,13 +8,13 @@ export default function ContactPage() {
         <p className="eyebrow">Contact</p>
         <h1>Visit, call, or send a wholesale request.</h1>
         <p className="lead">
-          Replace these details with the real showroom address, WhatsApp number, email, and business hours.
+          Connect with us for retail inquiries, festive orders, or dedicated wholesale support.
         </p>
         <div className="stats-grid" style={{ marginTop: 24 }}>
           <div className="stat">
             <Phone color="#b55b61" />
             <h3>Phone</h3>
-            <p className="muted">+91 90000 00000</p>
+            <p className="muted">+91 89808 67167</p>
           </div>
           <div className="stat">
             <Mail color="#65735b" />
@@ -24,7 +24,7 @@ export default function ContactPage() {
           <div className="stat">
             <MapPin color="#c49a45" />
             <h3>Showroom</h3>
-            <p className="muted">Your city, India</p>
+            <p className="muted">Rajkot, Gujarat, India</p>
           </div>
         </div>
       </div>
