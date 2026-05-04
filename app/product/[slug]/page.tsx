@@ -21,29 +21,44 @@ export default function ProductDetailPage() {
       <section className="container page">
         <h1>Product not found</h1>
         <p className="lead">This piece is no longer active in the catalog.</p>
-        <Link className="button" href="/shop">
-          Back to shop
-        </Link>
+        <Link className="button" href="/shop">Back to shop</Link>
       </section>
     );
   }
 
+  // Simulated discount
+  const originalPrice = Math.round(product.price_inr * 1.4);
+
   return (
     <section className="container page product-detail">
-      <div>
-        <Image className="gallery-main" src={product.images[0]} alt={product.name} width={800} height={1000} style={{ width: "100%", height: "auto" }} />
+      <div className="product-img-wrapper" style={{ aspectRatio: 'auto' }}>
+        <Image 
+          src={product.images[0]} 
+          alt={product.name} 
+          width={800} 
+          height={1000} 
+          className="gallery-main" 
+          priority
+          style={{ width: "100%", height: "auto", objectFit: "cover" }} 
+        />
       </div>
-      <div className="panel detail-panel">
-        <p className="eyebrow">{product.category}</p>
-        <h1>{product.name}</h1>
-        <p className="lead">{product.description}</p>
-        <p className="price" style={{ fontSize: "1.45rem" }}>
-          {formatInr(product.price_inr)}
-        </p>
-        <p className="muted">{product.stock} in stock</p>
-        <div className="split-actions">
-          <div className="quantity-control" aria-label="Quantity selector">
-            <button type="button" onClick={() => setQuantity(Math.max(1, quantity - 1))} aria-label="Decrease quantity">
+      
+      <div className="detail-panel" style={{ background: 'transparent', border: 'none', boxShadow: 'none', padding: 0 }}>
+        <p className="product-category" style={{ fontSize: '0.85rem' }}>{product.category}</p>
+        <h1 style={{ fontSize: '2.5rem', marginBottom: 15 }}>{product.name}</h1>
+        
+        <div className="product-price" style={{ fontSize: '1.8rem', marginBottom: 20 }}>
+          <span className="price-old" style={{ fontSize: '1.2rem' }}>{formatInr(originalPrice)}</span>
+          <span>{formatInr(product.price_inr)}</span>
+          <span className="discount-tag" style={{ fontSize: '1rem' }}> (28% OFF)</span>
+        </div>
+
+        <p className="muted" style={{ lineHeight: 1.8, marginBottom: 30 }}>{product.description}</p>
+        
+        <div style={{ marginBottom: 30 }}>
+          <label style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', display: 'block', marginBottom: 10 }}>Quantity</label>
+          <div className="quantity-control">
+            <button type="button" onClick={() => setQuantity(Math.max(1, quantity - 1))}>
               <Minus size={16} />
             </button>
             <span>{quantity}</span>
@@ -51,24 +66,27 @@ export default function ProductDetailPage() {
               type="button"
               onClick={() => setQuantity(Math.min(product.stock, quantity + 1))}
               disabled={quantity >= product.stock}
-              aria-label="Increase quantity"
             >
               <Plus size={16} />
             </button>
           </div>
-          <button className="button secondary" type="button" onClick={() => addItem(product.id, quantity)}>
-            <ShoppingBag size={18} /> Add to cart
+          <p className="muted" style={{ fontSize: '0.8rem', marginTop: 8 }}>{product.stock} items available</p>
+        </div>
+
+        <div className="form-actions">
+          <button 
+            className="button" 
+            style={{ flex: 1, padding: '18px' }}
+            onClick={() => addItem(product.id, quantity)}
+          >
+            <ShoppingBag size={20} style={{ marginRight: 10 }} /> Add to Bag
           </button>
         </div>
-        <div className="notice" style={{ marginTop: 18 }}>
-          Bulk buyer? Request a quote for this piece and similar designs.
-        </div>
-        <div className="form-actions" style={{ marginTop: 18 }}>
-          <Link className="button" href="/cart">
-            Go to cart
-          </Link>
-          <Link className="ghost-button" href={`/wholesale?product=${encodeURIComponent(product.name)}`}>
-            Ask for bulk price
+
+        <div className="notice" style={{ marginTop: 30, background: 'var(--accent)', border: 'none', color: 'var(--black)' }}>
+          <strong>Bulk Inquiry?</strong> Request a special quote for wholesale orders.
+          <Link href={`/wholesale?product=${encodeURIComponent(product.name)}`} style={{ display: 'block', marginTop: 10, fontWeight: 700, textDecoration: 'underline' }}>
+            Inquire Now
           </Link>
         </div>
       </div>

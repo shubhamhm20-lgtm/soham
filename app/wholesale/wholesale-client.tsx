@@ -32,7 +32,7 @@ export function WholesaleClient() {
     <section className="container page checkout-layout">
       <div>
         <p className="eyebrow">Wholesale</p>
-        <h1>Bulk jewellary inquiry</h1>
+        <h1>Bulk Jewellery Inquiry</h1>
         <p className="lead">
           Share the categories, quantities, and timeline you need. We will follow up with availability and wholesale pricing.
         </p>
