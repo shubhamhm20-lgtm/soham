@@ -16,8 +16,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "SOHAM SALES | Imitation Jewelry Boutique",
-  description: "Elegant imitation jewelry for everyday, festive, bridal, and wholesale buyers."
+  title: "SOHAM SALES | Imitation Jewellary Boutique",
+  description: "Elegant imitation jewellary for everyday, festive, bridal, and wholesale buyers."
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

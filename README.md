@@ -1,10 +1,10 @@
 # SOHAM SALES
 
-A Next.js ecommerce starter for an imitation jewelry business.
+A Next.js ecommerce starter for an imitation Jewellary business.
 
 ## Features
 
-- Elegant INR storefront with seeded imitation jewelry products
+- Elegant INR storefront with seeded imitation Jewellary products
 - Retail cart, checkout, flat shipping, manual payment, and Razorpay-ready online payment flow
 - Wholesale inquiry path for bulk buyers
 - Password-protected demo admin for products, orders, and inquiries

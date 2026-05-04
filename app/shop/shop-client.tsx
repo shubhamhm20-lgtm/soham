@@ -23,7 +23,7 @@ export function ShopClient() {
       <div className="section-head">
         <div>
           <p className="eyebrow">Shop</p>
-          <h1>Imitation jewelry collection</h1>
+          <h1>Imitation jewellary collection</h1>
           <p className="lead">Browse retail-ready pieces with wholesale inquiry available on every product.</p>
         </div>
       </div>

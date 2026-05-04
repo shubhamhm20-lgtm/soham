@@ -6,7 +6,7 @@ export function Footer() {
       <div className="container footer-grid">
         <div>
           <h3>SOHAM SALES</h3>
-          <p>Imitation jewelry for retail shoppers, festive wardrobes, and boutique wholesale buyers.</p>
+          <p>Imitation jewellary for retail shoppers, festive wardrobes, and boutique wholesale buyers.</p>
         </div>
         <div className="nav-links">
           <Link href="/shop">Shop</Link>

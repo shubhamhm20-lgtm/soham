@@ -16,7 +16,7 @@ export default function HomePage() {
     <>
       <section className="container hero">
         <div className="hero-copy">
-          <p className="eyebrow">Imitation jewelry boutique</p>
+          <p className="eyebrow">Imitation jewellary boutique</p>
           <h1>SOHAM SALES</h1>
           <p className="lead">
             Shop elegant necklaces, chandbalis, bangles, rings, and bridal sets in INR with easy
@@ -34,7 +34,7 @@ export default function HomePage() {
         <div className="hero-media">
           <Image
             src="https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=1300&q=90"
-            alt="Elegant imitation bridal jewelry set"
+            alt="Elegant imitation bridal jewellary set"
             width={1300}
             height={1625}
             priority
