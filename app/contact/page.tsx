@@ -1,5 +1,11 @@
 import Link from "next/link";
+import { Metadata } from "next";
 import { Mail, MapPin, Phone } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "Contact Us | SOHAM SALES",
+  description: "Get in touch with us for retail, festive, or wholesale jewellery inquiries."
+};
 
 export default function ContactPage() {
   return (

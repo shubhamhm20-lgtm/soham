@@ -35,6 +35,18 @@ export function getOrders() {
 }
 
 export function saveOrder(order: Order) {
+  // Update stock levels
+  const products = getProducts();
+  const updatedProducts = products.map(p => {
+    const orderItem = order.items.find(item => item.productId === p.id);
+    if (orderItem) {
+      return { ...p, stock: Math.max(0, p.stock - orderItem.quantity) };
+    }
+    return p;
+  });
+  saveProducts(updatedProducts);
+  
+  // Save order
   writeJson(orderKey, [order, ...getOrders()]);
 }
 

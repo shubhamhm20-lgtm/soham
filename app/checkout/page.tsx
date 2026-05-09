@@ -67,7 +67,7 @@ export default function CheckoutPage() {
             currency: data.currency,
             order_id: data.id,
             name: "SOHAM SALES",
-            description: "Jewellary order",
+            description: "Jewellery order",
             handler: () => {
               placeOrder("paid");
             }
