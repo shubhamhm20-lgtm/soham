@@ -319,7 +319,54 @@ img {
   font-weight: 700;
 }
 
-/* Category Section - Circle Style with Custom Way */
+/* Category Filters Redesign */
+.filter-list {
+  display: flex;
+  gap: 30px;
+  overflow-x: auto;
+  padding-bottom: 15px;
+  margin-bottom: 40px;
+  border-bottom: 1px solid var(--line);
+  scrollbar-width: none; /* Hide scrollbar for clean look */
+}
+
+.filter-list::-webkit-scrollbar {
+  display: none;
+}
+
+.filter-chip {
+  background: none;
+  border: none;
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  color: var(--muted);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.3s ease;
+  position: relative;
+  padding: 0;
+}
+
+.filter-chip:hover {
+  color: var(--black);
+}
+
+.filter-chip.active {
+  color: var(--gold);
+  font-weight: 600;
+}
+
+.filter-chip.active::after {
+  content: '';
+  position: absolute;
+  bottom: -16px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--gold);
+}
+
+/* Category Section - Circle Style */
 .category-list {
   display: flex;
   justify-content: center;
