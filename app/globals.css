@@ -147,7 +147,7 @@ img {
   font-weight: 700;
 }
 
-/* Hero Section */
+/* Hero Section - Adjusted to prevent text overlap */
 .hero {
   position: relative;
   height: 85vh;
@@ -160,12 +160,12 @@ img {
 .hero-content {
   position: relative;
   z-index: 2;
-  max-width: 600px;
-  padding-left: 5%;
+  max-width: 550px; /* Reduced from 600px */
+  padding-left: 8%; /* Increased from 5% */
 }
 
 .hero h1 {
-  font-size: clamp(3rem, 6vw, 4.5rem);
+  font-size: clamp(2.5rem, 5vw, 3.8rem); /* Reduced from 3rem-4.5rem */
   line-height: 1.1;
   margin-bottom: 20px;
   text-transform: uppercase;
@@ -176,6 +176,7 @@ img {
   color: var(--muted);
   margin-bottom: 30px;
   line-height: 1.6;
+  max-width: 450px;
 }
 
 .hero-img {
@@ -185,6 +186,7 @@ img {
   width: 60%;
   height: 100%;
   object-fit: cover;
+  object-position: right center; /* Ensure image focuses on the right */
 }
 
 /* Buttons */
