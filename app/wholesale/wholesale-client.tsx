@@ -17,11 +17,11 @@ export function WholesaleClient() {
       id: `WI-${Date.now().toString().slice(-7)}`,
       createdAt: new Date().toISOString(),
       name: String(form.get("name") || ""),
-      businessName: String(form.get("businessName") || ""),
+      businessName: String(form.get("businessName") || "N/A"),
       phone: String(form.get("phone") || ""),
       email: String(form.get("email") || ""),
-      requestedProducts: String(form.get("requestedProducts") || ""),
-      quantityEstimate: String(form.get("quantityEstimate") || ""),
+      requestedProducts: product,
+      quantityEstimate: "See requirements",
       message: String(form.get("message") || ""),
       status: "new"
     });
@@ -75,60 +75,47 @@ export function WholesaleClient() {
           <div className="wholesale-layout">
             <div>
               <p className="eyebrow">Contact Us</p>
-              <h2 style={{ marginBottom: 25 }}>Start Your Inquiry</h2>
+              <h2 style={{ marginBottom: 25 }}>Simple Inquiry</h2>
               <p className="muted" style={{ fontSize: '1.1rem', lineHeight: 1.8, marginBottom: 30 }}>
-                Fill out the form to request our wholesale catalog, current stock list, 
-                or a custom quote for bulk orders. Our team will get back to you within 24 hours.
+                Drop your details and what you are looking for. Our wholesale manager will personally reach out to you with the catalog and pricing.
               </p>
               
               <div style={{ display: 'grid', gap: 20 }}>
                 <div style={{ display: 'flex', gap: 15, alignItems: 'center' }}>
                   <ShieldCheck color="var(--gold)" />
-                  <span>Verified Manufacturing in Rajkot</span>
+                  <span>Direct from Rajkot Factory</span>
                 </div>
                 <div style={{ display: 'flex', gap: 15, alignItems: 'center' }}>
                   <ShieldCheck color="var(--gold)" />
-                  <span>Custom Design Support Available</span>
+                  <span>24/7 WhatsApp Support</span>
                 </div>
               </div>
             </div>
 
             <form className="panel" onSubmit={submitInquiry} style={{ boxShadow: 'var(--shadow-md)', padding: 40, background: 'var(--white)' }}>
-              <h3 style={{ marginBottom: 20 }}>Wholesale Inquiry Form</h3>
-              {submitted ? <div className="notice" style={{ marginBottom: 20 }}>Inquiry received! Our wholesale manager will contact you shortly.</div> : null}
+              <h3 style={{ marginBottom: 20 }}>Quick Quote Request</h3>
+              {submitted ? <div className="notice" style={{ marginBottom: 20 }}>Message sent! We will WhatsApp you shortly.</div> : null}
               
               <div className="form-grid">
-                <div className="field">
-                  <label htmlFor="name">Full Name</label>
-                  <input id="name" name="name" required placeholder="John Doe" />
+                <div className="field full">
+                  <label htmlFor="name">Your Name</label>
+                  <input id="name" name="name" required placeholder="Full Name" />
                 </div>
-                <div className="field">
-                  <label htmlFor="businessName">Business Name</label>
-                  <input id="businessName" name="businessName" placeholder="Jewel Boutique Ltd" />
-                </div>
-                <div className="field">
+                <div className="field full">
                   <label htmlFor="phone">Phone / WhatsApp</label>
-                  <input id="phone" name="phone" required placeholder="+91 ..." />
-                </div>
-                <div className="field">
-                  <label htmlFor="email">Work Email</label>
-                  <input id="email" name="email" required type="email" placeholder="john@business.com" />
+                  <input id="phone" name="phone" required placeholder="+91 00000 00000" />
                 </div>
                 <div className="field full">
-                  <label htmlFor="requestedProducts">Products of Interest</label>
-                  <input id="requestedProducts" name="requestedProducts" required defaultValue={product} placeholder="e.g. Bridal Sets, Chandbalis" />
+                  <label htmlFor="email">Email Address (Optional)</label>
+                  <input id="email" name="email" type="email" placeholder="email@example.com" />
                 </div>
                 <div className="field full">
-                  <label htmlFor="quantityEstimate">Estimated Quantity</label>
-                  <input id="quantityEstimate" name="quantityEstimate" required placeholder="Example: 100 sets per month" />
-                </div>
-                <div className="field full">
-                  <label htmlFor="message">Additional Requirements</label>
-                  <textarea id="message" name="message" placeholder="Tell us about your business and specific needs..." />
+                  <label htmlFor="message">What are you looking for?</label>
+                  <textarea id="message" name="message" required placeholder="Example: Need 20 sets of kundan necklaces for my boutique in Mumbai..." style={{ minHeight: 150 }} />
                 </div>
               </div>
               <button className="button" type="submit" style={{ width: '100%', marginTop: 25 }}>
-                Submit Request
+                Send My Inquiry
               </button>
             </form>
           </div>
